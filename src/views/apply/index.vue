@@ -83,9 +83,8 @@
                     circle
                     @click="showMap"
                     icon="el-icon-location"
-                    style="margin-left:5px"
-                    ></el-button
-                  >
+                    style="margin-left: 5px"
+                  ></el-button>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -105,7 +104,7 @@
                     :file-list="schoolPermitfileList"
                     :action="schoolPermitAction"
                     :before-upload="schoolPermitBeforeUpload"
-                    :on-success="handleSuccess"
+                    :on-success="handleschoolPermitSuccess"
                     list-type="picture"
                   >
                     <el-button size="small" type="primary">点击上传</el-button>
@@ -119,7 +118,7 @@
                     :file-list="sanitaryPermitfileList"
                     :action="sanitaryPermitAction"
                     :before-upload="sanitaryPermitBeforeUpload"
-                    :on-success="handleSuccess"
+                    :on-success="handlesanitaryPermitSuccess"
                     list-type="picture"
                   >
                     <el-button size="small" type="primary">点击上传</el-button>
@@ -133,7 +132,7 @@
                     :file-list="firePermitfileList"
                     :action="firePermitAction"
                     :before-upload="firePermitBeforeUpload"
-                    :on-success="handleSuccess"
+                    :on-success="handlefirePermitSuccess"
                     list-type="picture"
                   >
                     <el-button size="small" type="primary">点击上传</el-button>
@@ -151,7 +150,7 @@
                     :file-list="organizationCodefileList"
                     :action="organizationCodeAction"
                     :before-upload="organizationCodeBeforeUpload"
-                    :on-success="handleSuccess"
+                    :on-success="handleorganizationCodeSuccess"
                     list-type="picture"
                   >
                     <el-button size="small" type="primary">点击上传</el-button>
@@ -169,6 +168,7 @@
                     :file-list="taxRegistrationCertificatefileList"
                     :action="taxRegistrationCertificateAction"
                     :before-upload="taxRegistrationCertificateBeforeUpload"
+                    :on-success="handletaxRegistrationCertificateSuccess"
                     list-type="picture"
                   >
                     <el-button size="small" type="primary">点击上传</el-button>
@@ -212,6 +212,7 @@
   </div>
 </template>
 <script>
+import { handleApply } from "@/api/ApplyApi";
 export default {
   name: "Apply",
   components: {},
@@ -230,10 +231,9 @@ export default {
         firePermit: null,
         organizationCode: null,
         taxRegistrationCertificate: null,
-        
       },
       dialogAreaMapVisible: false,
-       location: {
+      location: {
         lng: 119.303434,
         lat: 26.28,
       },
@@ -281,16 +281,16 @@ export default {
           },
         ],
       },
-      schoolPermitAction: process.env.VUE_APP_BASE_URL+"doUploadImg",
+      schoolPermitAction: process.env.VUE_APP_BASE_URL + "doUploadImg",
       schoolPermitfileList: [],
-      sanitaryPermitAction: process.env.VUE_APP_BASE_URL+"doUploadImg",
+      sanitaryPermitAction: process.env.VUE_APP_BASE_URL + "doUploadImg",
       sanitaryPermitfileList: [],
-      firePermitAction: process.env.VUE_APP_BASE_URL+"doUploadImg",
+      firePermitAction: process.env.VUE_APP_BASE_URL + "doUploadImg",
       firePermitfileList: [],
-      organizationCodeAction: process.env.VUE_APP_BASE_URL+"doUploadImg",
+      organizationCodeAction: process.env.VUE_APP_BASE_URL + "doUploadImg",
       organizationCodefileList: [],
       taxRegistrationCertificateAction:
-        "https://jsonplaceholder.typicode.com/posts/",
+       process.env.VUE_APP_BASE_URL + "doUploadImg",
       taxRegistrationCertificatefileList: [],
     };
   },
@@ -299,7 +299,7 @@ export default {
   created() {},
   mounted() {},
   methods: {
-   initMap: function ({ BMap, map }) {
+    initMap: function ({ BMap, map }) {
       this.point = new BMap.Point(this.location.lng, this.location.lat);
       //   let cityControl = new BMap.CityListControl({
       //     offset: new BMap.Size(10, 5),
@@ -368,18 +368,49 @@ export default {
       //   // 将控件添加到地图上
       //   map.addControl(locationControl);
     },
-    doFillArea(){},
-    handleSuccess(resp,file,fileList){
-      console.log(resp,file,fileList);
+    doFillArea() {},
+    handleschoolPermitSuccess(resp, file, fileList) {
+      this.formData.schoolPermit = resp.tokenMap.fileMd5;
     },
+    handlesanitaryPermitSuccess(resp, file, fileList) {
+      this.formData.sanitaryPermit = resp.tokenMap.fileMd5;
+    },
+    handlefirePermitSuccess(resp, file, fileList) {
+      this.formData.firePermit = resp.tokenMap.fileMd5;
+    },
+    handleorganizationCodeSuccess(resp, file, fileList) {
+      this.formData.organizationCode = resp.tokenMap.fileMd5;
+    },
+    handletaxRegistrationCertificateSuccess(resp, file, fileList) {
+      this.formData.taxRegistrationCertificate = resp.tokenMap.fileMd5;
+    },
+
     showMap() {
       this.dialogAreaMapVisible = true;
     },
     submitForm() {
-      // this.$refs["elForm"].validate((valid) => {
-      //   if (!valid) return;
-      // });
-      console.log(1);
+      this.$refs["elForm"].validate((valid) => {
+        if (!valid) return;
+      });
+
+      let audit = this.formData;
+      handleApply({
+        schoolName: audit.schoolName,
+        legalPerson: audit.legalPerson,
+        legalPersonCard: audit.legalPersonCard,
+        contactPhone: audit.contactPhone,
+        schoolAddress: audit.schoolAddress,
+        contactEmail: audit.contactEmail,
+        schoolPermit: audit.schoolPermit,
+        sanitaryPermit: audit.sanitaryPermit,
+        firePermit: audit.firePermit,
+        organizationCode: audit.organizationCode,
+        taxRegistrationCertificate: audit.taxRegistrationCertificate,
+      }).then((resp)=>{
+         if (resp.code === 200) {
+            this.$message("提交成功")
+          }
+      })
     },
     resetForm() {
       this.$refs["elForm"].resetFields();

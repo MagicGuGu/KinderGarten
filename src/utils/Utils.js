@@ -60,6 +60,32 @@ export default {
   },
   getToken4Session: function() {
     return this.getStr4Session('token')
-  }
+  },
+  // 解析时间戳 yyyy-MM-dd
+  getDateForEndDay: function (num) {
+    console.log(num);
+    var d = new Date(num);
+    return d.getFullYear() + "-" +
+        this.addZero(d.getMonth() + 1) + "-" +
+        this.addZero(d.getDate())
+},
+// 解析时间戳 yyyy-MM-dd-HH-mm-ss
+getDate: function (num) {
+    let d = new Date(num);
+    return d.getFullYear() + "-" +
+        this.addZero(d.getMonth() + 1) + "-" +
+        this.addZero(d.getDate()) + " " +
+        this.addZero(d.getHours()) + ":" +
+        this.addZero(d.getMinutes()) + ":" +
+        this.addZero(d.getSeconds());
+},
+// 补0
+addZero: function (data) {
+    if (data > 9) {
+        return data;
+    } else {
+        return "0" + data;
+    }
+},
 }
 
