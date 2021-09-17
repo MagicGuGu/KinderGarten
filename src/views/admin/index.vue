@@ -92,7 +92,7 @@
 <script>
 // import { validUsername } from '@/utils/validate'
 import util from "@/utils/Utils.js";
-import { adminLogin, queryDirctionAll, getToken } from "@/api/AdminLoginApi";
+import { adminLogin, initDict, getToken } from "@/api/AdminLoginApi";
 import { setToken } from '@/utils/auth'
 export default {
   name: "Login",
@@ -182,12 +182,12 @@ export default {
     }, // 初始化字典表
     // 初始化字典表
     initDict() {
-      queryDirctionAll({})
+      initDict({})
         // 成功
         .then((resp) => {
-          if (resp.code === 200) {
-            util.saveDict(resp.dict);
-          }
+    
+            util.saveDict(resp.tokenMap.dictList);
+          
         });
     },
     // 获取token

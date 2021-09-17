@@ -21,7 +21,9 @@ const service = axios.create({
 // 请求拦截
 service.interceptors.request.use(
   config => {
-    config.baseURL = config.params.isUser?process.env.VUE_APP_BASE_USER_URL:process.env.VUE_APP_BASE_URL
+    if(config.method == 'post'){
+      config.baseURL = config.data.isAdmin?process.env.VUE_APP_BASE_URL:process.env.VUE_APP_BASE_USER_URL
+    }
     // 请求前
     if (store.getters.token) {
       // 让每个请求携带自定义token

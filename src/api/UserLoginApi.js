@@ -1,10 +1,17 @@
 import request from '@/utils/request'
 
-export function userLogin(params) {
-    params.isUser=true;
+export function userLogin(data) {
     return request({
       url: '/doLogin',
       method: 'post',
-      params
+      data
+    })
+  }
+
+  export function initDict(data) {
+    return request({
+      url: '/initDict',
+      method: 'post',
+      data
     })
   }

@@ -14,6 +14,9 @@ function registerRoutes(app) {
   })
   for (const mock of mocksForServer) {
     app[mock.type](mock.url, mock.response)
+    // app[mock.type](mock.url, bodyParser.json(), bodyParser.urlencoded({
+    //   extended: true
+    // }), mock.response)
     mockLastIndex = app._router.stack.length
   }
   const mockRoutesLength = Object.keys(mocksForServer).length

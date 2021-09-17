@@ -1,16 +1,18 @@
 import request from '@/utils/request'
 
-export function adminLogin(params) {
+export function adminLogin(data) {
+  data.isAdmin = true;
   return request({
     url: '/adminLogin',
     method: 'post',
-    params
+    data
   })
 }
 
-export function queryDirctionAll(data) {
+export function initDict(data) {
+  data.isAdmin = true;
   return request({
-    url: '/queryAll',
+    url: '/initDict',
     method: 'post',
     data
   })

@@ -1,8 +1,8 @@
 export default {
   // 保存json对象到sessionStorage
-  saveJsonObj2Session: function(key, jsonObj) {
-    sessionStorage.setItem(key, jsonObj)
-  },
+  saveJsonObj2Session: function (key, json) {
+    sessionStorage.setItem(key, JSON.stringify(json));
+},
   // 从sessionStorage获取json对象
   getJsonObj4Session: function(key) {
     var str = sessionStorage.getItem(key)
@@ -20,8 +20,8 @@ export default {
     var dictInfos = this.getJsonObj4Session('dict')
     var map = new Map()
     for (var i = 0; i < dictInfos.length; i++) {
-      if (dictInfos[i].typeAlias === alias) {
-        map.set(dictInfos[i].typeId, dictInfos[i].typeName)
+      if (dictInfos[i].dictType === alias) {
+        map.set(dictInfos[i].dictValue, dictInfos[i].dictLabel)
       }
     }
     return map

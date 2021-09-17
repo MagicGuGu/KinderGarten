@@ -31,12 +31,6 @@ import Layout from '@/layout'
  * all roles can be accessed
  */
 export const constantRoutes = [
-
-  {
-    path: '/userLogin',
-    component: () => import('@/views/login/index'),
-    hidden: true
-  },
   {
     path: '/adminLogin',
     component: () => import('@/views/admin/index'),
@@ -49,12 +43,11 @@ export const constantRoutes = [
     hidden: true,
     children: [
       { path: "/", component: () => import('@/views/kindergarten/index') },
-      { path: "/apply", component: () => import('@/views/apply/index') },
       {
-        path: '/directorMain',
-        component: () => import('@/views/director/index'),
-        hidden: true
+        path: '/userLogin',
+        component: () => import('@/views/login/index'),
       },
+      { path: "/apply", component: () => import('@/views/apply/index') },
     ]
   },
   {
@@ -62,6 +55,56 @@ export const constantRoutes = [
     component: () => import('@/views/404'),
     hidden: true
   },
+
+  {
+    path: '/directorMain',
+    component: () => import('@/views/director/main'),
+    hidden: true,
+    children:[
+      {
+        path: '/director',
+        component: () => import('@/views/director/index'),
+      },
+      {
+        path: '/teacherMgr',
+        component: () => import('@/views/director/TeactherManage'),
+      },
+      {
+        path: '/classMgr',
+        component: () => import('@/views/director/ClassManage'),
+      },
+      {
+        path: '/babyMgr',
+        component: () => import('@/views/director/BabyManager'),
+      },
+      {
+        path: '/foodMgr',
+        component: () => import('@/views/director/FoodManage'),
+      },
+      {
+        path: '/safeEduMgr',
+        component: () => import('@/views/director/SafeEduManage'),
+      },
+      {
+        path: '/gardenEdit',
+        component: () => import('@/views/director/GardenEdit'),
+      },
+      {
+        path: '/personCenter',
+        component: () => import('@/views/kindergarten/PersonCenter'),
+      },
+      {
+        path: '/courseMgr',
+        component: () => import('@/views/director/CourseManage'),
+      },
+      {
+        path: '/classroomMgr',
+        component: () => import('@/views/director/ClassroomManage'),
+      }
+    ]
+  },
+
+
   // {
   //   path: '/main',
   //   component: () => import('@/views/dashboard/index'),
@@ -73,7 +116,7 @@ export const constantRoutes = [
     component: Layout,
     // redirect: '/dashboard',
     children: [{
-      path: 'dashboard',
+      path: '/dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
       meta: { title: '首页', icon: 'dashboard' }
@@ -83,13 +126,13 @@ export const constantRoutes = [
 
   {
     path: '/audit',
-    component:Layout,
-    children:[
+    component: Layout,
+    children: [
       {
-        path:'/audit',
+        path: '/audit',
         component: () => import('@/views/audit/index'),
-        name:'audit',
-        meta: { title: '资格审核',icon:'excel' }
+        name: 'audit',
+        meta: { title: '资格审核', icon: 'component' }
       }
     ]
   },
@@ -103,11 +146,11 @@ export const constantRoutes = [
         path: 'export-excel',
         component: () => import('@/views/excel/index'),
         name: 'excel',
-        meta: { title: 'excelDemo', icon: 'excel' }
+        meta: { title: 'excelDemo', icon: 'component' }
       }
     ]
   },
-  
+
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

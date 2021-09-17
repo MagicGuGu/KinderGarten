@@ -90,14 +90,17 @@
 </template>
 
 <script>
-import { userLogin } from "@/api/UserLoginApi";
+import { userLogin,initDict } from "@/api/UserLoginApi";
+import util from "@/utils/Utils"
 export default {
   name: "directorLogin",
-  components: {},
+  mounted() {
+    this.initDict();
+  },
   data: function () {
     return {
-      loginEmail: "",
-      password: "",
+      loginEmail: "2534108975@qq.com",
+      password: "123",
       code: "",
       codeUrl: process.env.VUE_APP_BASE_USER_URL + "captcha",
     };
@@ -112,6 +115,12 @@ export default {
         // 成功
         .then((resp) => {
           if (resp.code === 200) {
+            sessionStorage.setItem("userId",resp.tokenMap.userId);
+
+            let schoolId = resp.tokenMap.schoolId;
+            if(schoolId){
+              sessionStorage.setItem("schoolId",schoolId);
+            }
             this.$router.push(resp.tokenMap.location);
           }
         });
@@ -119,6 +128,11 @@ export default {
     changeCode() {
       this.codeUrl = this.codeUrl + "?" + Math.random();
     },
+    initDict(){
+      initDict({}).then((resp)=>{
+        util.saveDict(resp.tokenMap.dictList);
+      })
+    }
   },
 };
 </script>

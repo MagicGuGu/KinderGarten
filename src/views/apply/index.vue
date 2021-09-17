@@ -467,6 +467,7 @@ export default {
   background-size: 100% 100%; /* 使图片平铺满整个浏览器（从宽和高的最大需求方面来满足，会使某些部分无法显示在区域中） */
   background-position: center 0;
   background-repeat: no-repeat;
+  position: absolute;
 }
 
 .title {

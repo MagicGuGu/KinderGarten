@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 
-export function handleApply(params) {
+export function handleApply(data) {
+  data.isAdmin = true;
   return request({
     url: '/doApply',
     method: 'post',
-    params
+    data
   })
 }

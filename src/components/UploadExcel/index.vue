@@ -1,8 +1,8 @@
 <template>
   <div>
     <input ref="excel-upload-input" class="excel-upload-input" type="file" accept=".xlsx, .xls" @change="handleClick">
-      <el-button :loading="loading" style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">
-        批量导入
+      <el-button :loading="loading"   type="primary" @click="handleUpload">
+        选择导入文件
       </el-button>
   </div>
 </template>

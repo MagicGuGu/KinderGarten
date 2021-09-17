@@ -1,17 +1,19 @@
 import request from '@/utils/request'
 
-export function init(params) {
+export function init(data) {
+  data.isAdmin = true;
   return request({
     url: '/initAudit',
     method: 'post',
-    params
+    data
   })
 }
 
-export function doAgree(params) {
+export function doAgree(data) {
+  data.isAdmin = true;
     return request({
       url: '/doAudit',
       method: 'post',
-      params
+      data
     })
 }
