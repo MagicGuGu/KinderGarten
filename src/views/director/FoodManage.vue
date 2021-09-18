@@ -25,16 +25,14 @@
               size="medium"
               round
               @click="search"
-              >搜索</el-button
-            >
+            >搜索</el-button>
             <el-button
               class="field btn"
               type="primary"
               size="medium"
               round
               @click="clearAll"
-              >重置</el-button
-            >
+            >重置</el-button>
           </el-form-item>
         </el-form>
         <el-card class="box-card" style="height: calc(100% - 62.8px)">
@@ -46,16 +44,14 @@
               size="medium"
               round
               @click="dialogBatchVisible = true"
-              >批量导入</el-button
-            >
+            >批量导入</el-button>
             <el-button
               class="field btn"
               type="primary"
               size="medium"
               round
               @click="showAddFoodPanel"
-              >新增</el-button
-            >
+            >新增</el-button>
           </div>
           <docm-table :datas="tableData" style="width: 100%" />
           <div class="block">
@@ -66,11 +62,11 @@
               :total="count"
               :page-size="limit"
               :page-count="allPage"
+              style="margin-top: 10px"
               @prev-click="prevPage"
               @next-click="nextPage"
               @current-change="changePage"
-              style="margin-top: 10px"
-            ></el-pagination>
+            />
           </div>
         </el-card>
       </div>
@@ -112,15 +108,13 @@
             type="primary"
             style="width: 100%; margin-top: 10px"
             @click="sureAddFood"
-            >新增</el-button
-          >
-          <br />
+          >新增</el-button>
+          <br>
           <el-button
             type="primary"
             style="width: 100%; margin-top: 10px"
             @click="hideAddFoodPanel"
-            >取消</el-button
-          >
+          >取消</el-button>
         </el-col>
       </el-row>
     </el-dialog>
@@ -150,68 +144,66 @@
             type="primary"
             style="width: 100%; margin-top: 10px"
             @click="suerChangeFood"
-            >修改</el-button
-          >
-          <br />
+          >修改</el-button>
+          <br>
           <el-button
             type="primary"
             style="width: 100%; margin-top: 10px"
             @click="hideChangeFoodPanel"
-            >取消</el-button
-          >
+          >取消</el-button>
         </el-col>
       </el-row>
     </el-dialog>
   </div>
 </template>
 <script>
-import { initFood, addFood, updateFood, addFoods } from "@/api/FoodInfoApi";
-import UploadExcelComponent from "@/components/UploadExcel/index.vue";
-import DocmTable from "@/components/table/DocmTable.vue";
-import util from "@/utils/Utils";
+import { initFood, addFood, updateFood, addFoods } from '@/api/FoodInfoApi'
+import UploadExcelComponent from '@/components/UploadExcel/index.vue'
+import DocmTable from '@/components/table/DocmTable.vue'
+import util from '@/utils/Utils'
 export default {
-  name: "FoodInfo",
+  name: 'FoodInfo',
   components: { DocmTable, UploadExcelComponent },
-  data: function () {
+  data: function() {
     return {
       roleList: null,
       // 控制弹出面板
       addFoodPanel: false,
       changeFoodPanel: false,
       // 新增对话框得下拉框数据
-      addFoodName: "",
-      addFoodTypeSelect: "",
+      addFoodName: '',
+      addFoodTypeSelect: '',
       // 修改对话框得下拉框数据
-      changeFoodName: "",
-      changeFoodTypeSelect: "",
+      changeFoodName: '',
+      changeFoodTypeSelect: '',
       // 搜索信息
       form: {
-        foodName: "",
-        foodTypeS: util.getListByAlias("foodType"),
-        foodTypeSelect: "",
+        foodName: '',
+        foodTypeS: util.getListByAlias('foodType'),
+        foodTypeSelect: ''
       },
 
       tableData: {
         theads: [
-          { name: "膳食名称", key: "foodName" },
-          { name: "膳食类型", key: "foodTypeLabel" },
-          { name: "状态", key: "statusLabel" },
+          { name: '膳食名称', key: 'foodName' },
+          { name: '膳食类型', key: 'foodTypeLabel' },
+          { name: '状态', key: 'statusLabel' }
         ],
         datas: [],
         btns: [
           {
             id: 1,
-            name: "修改",
-            type: "primary",
-            handle: "handleEdit",
+            name: '修改',
+            type: 'primary',
+            handle: 'handleEdit'
           },
           {
             id: 2,
-            name: "删除",
-            type: "waring",
-            handle: "handleDel",
-          },
-        ],
+            name: '删除',
+            type: 'waring',
+            handle: 'handleDel'
+          }
+        ]
       },
       start: 0,
       limit: 5,
@@ -222,148 +214,140 @@ export default {
       mainShow: true,
       moveObj: null,
       deleteSign: false,
-      dialogBatchVisible: false,
-    };
+      dialogBatchVisible: false
+    }
   },
   created() {
-    this.search();
+    this.search()
   },
   methods: {
     // 搜索方法
     search() {
-      let that = this;
+      const that = this
       initFood({
         foodName: this.form.foodName,
         // foodType: util.valueFormat(this.form.foodTypeSelect, this.form.foodTypeS, { labelKey: 'dictLabel', valueKey: 'dictValue' }),
         start: this.start,
-        limit: this.limit,
+        limit: this.limit
       }).then((resp) => {
-        let data = resp.tokenMap.foodList;
-        that.tableData.datas = [];
-        that.count = resp.tokenMap.count;
+        const data = resp.tokenMap.foodList
+        that.tableData.datas = []
+        that.count = resp.tokenMap.count
         that.allPage =
           that.count % that.limit === 0
             ? that.count / that.limit
-            : parseInt(that.count / that.limit) + 1;
-        if (that.allPage == 0) {
-          that.allPage = 1;
+            : parseInt(that.count / that.limit) + 1
+        if (that.allPage === 0) {
+          that.allPage = 1
         }
-        for (let i of data) {
-          i.foodTypeLabel = util.findStateName("food", i.foodType);
-          i.statusLabel = util.findStateName("status", i.foodStatus);
-          that.tableData.datas.push(i);
+        for (const i of data) {
+          i.foodTypeLabel = util.findStateName('food', i.foodType)
+          i.statusLabel = util.findStateName('status', i.foodStatus)
+          that.tableData.datas.push(i)
         }
-      });
+      })
     },
     handleSuccess(excel) {
       addFoods({
-        batchData: excel.results,
+        batchData: excel.results
       }).then((resp) => {
         this.$message({
           message: resp.message,
-          type: "success",
-        });
-        this.search();
-      });
+          type: 'success'
+        })
+        this.search()
+      })
     },
     beforeUpload() {
-      return true;
+      return true
     },
     // 数据处理
     initData(obj) {
       for (const i of obj) {
         i.foddType = util.valueFormat(obj.foodType, this.form.foodTypeS, {
-          labelKey: "dictValue",
-          valueKey: "dictLabel",
-        });
-        this.tableData.datas.push(i);
+          labelKey: 'dictValue',
+          valueKey: 'dictLabel'
+        })
+        this.tableData.datas.push(i)
       }
     },
     // 新增膳食方法
     showAddFoodPanel() {
-      this.addFoodPanel = true;
+      this.addFoodPanel = true
     },
     sureAddFood() {
       addFood({
-        foodType: util.valueFormat(
-          this.addFoodTypeSelect,
-          this.form.foodTypeS,
-          { labelKey: "dictLabel", valueKey: "dictValue" }
-        ),
-        foddName: this.addFoodName,
+        foodType: this.addFoodTypeSelect,
+        foddName: this.addFoodName
       }).then((resp) => {
         if (resp.id === 200) {
           this.$message({
-            message: "增加成功",
-            type: "success",
-          });
-          this.addFoodPanel = false;
-          this.start = 0;
-          this.currPage = 1;
-          this.search();
+            message: '增加成功',
+            type: 'success'
+          })
+          this.addFoodPanel = false
+          this.start = 0
+          this.currPage = 1
+          this.search()
         } else {
-          this.$message.error("增加失败");
+          this.$message.error('增加失败')
         }
-      });
+      })
     },
     hideAddFoodPanel() {
-      this.addFoodPanel = false;
+      this.addFoodPanel = false
     },
     // 修改膳食方法
     showChangeFoodPanel() {
-      this.changeFoodPanel = true;
+      this.changeFoodPanel = true
     },
     suerChangeFood() {
       updateFood({
-        foodType: util.valueFormat(
-          this.changeFoodTypeSelect,
-          this.form.foodTypeS,
-          { labelKey: "dictLabel", valueKey: "dictValue" }
-        ),
-        foddName: this.changeFoodName,
+        foodType: this.changeFoodTypeSelect,
+        foddName: this.changeFoodName
       }).then((resp) => {
         if (resp.id === 200) {
           this.$message({
-            message: "修改成功",
-            type: "success",
-          });
-          this.changeFoodPanel = false;
-          this.start = 0;
-          this.currPage = 1;
-          this.search();
+            message: '修改成功',
+            type: 'success'
+          })
+          this.changeFoodPanel = false
+          this.start = 0
+          this.currPage = 1
+          this.search()
         } else {
-          this.$message.error("修改失败");
+          this.$message.error('修改失败')
         }
-      });
+      })
     },
     hideChangeFoodPanel() {
-      this.changeFoodPanel = false;
+      this.changeFoodPanel = false
     },
     // 当前页翻页
     changePage(page) {
-      this.start = (page - 1) * this.limit;
-      this.search();
+      this.start = (page - 1) * this.limit
+      this.search()
     },
     // 上一页
     prevPage() {
-      this.currPage--;
-      this.start -= this.limit;
-      this.search();
+      this.currPage--
+      this.start -= this.limit
+      this.search()
     },
     // 下一页
     nextPage() {
-      this.currPage++;
-      this.start += this.limit;
-      this.search();
+      this.currPage++
+      this.start += this.limit
+      this.search()
     },
     // 重置
     clearAll() {
-      this.form.foodName = "";
-      this.form.foodTypeSelect = "";
-      this.search();
-    },
-  },
-};
+      this.form.foodName = ''
+      this.form.foodTypeSelect = ''
+      this.search()
+    }
+  }
+}
 </script>
 <style scoped lang="scss">
 .foodInfo {

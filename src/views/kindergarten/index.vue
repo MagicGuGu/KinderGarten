@@ -42,7 +42,7 @@
                   <el-image class="school-image" :preview-src-list="[item.image]" lazy fit="contain" />
                   <div class="schoolContainer-info">
                     <p class="schoolName">{{ item.schoolName }}</p>
-                    <p class="name">{{ item.name }}</p>
+                    <p class="name">{{ item.directorName }}</p>
                     <p class="addr">{{ item.addr }}</p>
                   </div>
                 </div>
@@ -73,24 +73,42 @@ export default {
         { id: 2, idView: require('@/assets/main_images/轮播3.png') }],
       swiperList: [
         {
-          image: require('@/assets/main_images/gugu.png'),
+          image: 'http://E:\img\gugu.png',
           schoolName: '111',
-          name: 'xxxx',
+          directorName: 'xxxx',
           addr: 'xxxxx-xxxxx'
         },
         {
           image: require('@/assets/main_images/gugu.png'),
           schoolName: '222',
-          name: 'xxxx',
+          directorName: 'xxxx',
           addr: 'xxxxx-xxxxx'
         },
         {
           image: require('@/assets/main_images/gugu.png'),
           schoolName: '333',
-          name: 'xxxx',
+          directorName: 'xxxx',
           addr: 'xxxxx-xxxxx'
         }
       ],
+        // {
+        // image: require('@/assets/main_images/gugu.png'),
+        //   schoolName: '111',
+        //   directorName: 'xxxx',
+        //   addr: 'xxxxx-xxxxx'
+        // },
+        // {
+        //   image: require('@/assets/main_images/gugu.png'),
+        //   schoolName: '222',
+        //   directorName: 'xxxx',
+        //   addr: 'xxxxx-xxxxx'
+        // },
+        // {
+        //   image: require('@/assets/main_images/gugu.png'),
+        //   schoolName: '333',
+        //   directorName: 'xxxx',
+        //   addr: 'xxxxx-xxxxx'
+        // } 
       swiperOptions: {
         autoplay: false,
         loop: true,
