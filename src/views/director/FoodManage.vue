@@ -278,7 +278,7 @@ export default {
     sureAddFood() {
       addFood({
         foodType: this.addFoodTypeSelect,
-        foddName: this.addFoodName
+        foodName: this.addFoodName
       }).then((resp) => {
         if (resp.id === 200) {
           this.$message({
